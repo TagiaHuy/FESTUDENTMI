@@ -32,7 +32,7 @@ const Register = () => {
         }
     };
 
-    return (
+    return (        
         <div style={{ padding: '20px' }}>
             <h2>Đăng ký hệ thống (Vulnerable)</h2>
             <form onSubmit={handleSubmit}>
