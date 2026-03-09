@@ -49,7 +49,7 @@ const Login = () => {
 
     return (
         <div style={{ padding: '40px', backgroundColor: '#fff', minHeight: '100vh', color: '#000' }}>
-            <div style={{ maxWidth: '400px', margin: '0 auto', border: '1px solid #ddd', padding: '30px', borderRadius: '8px' }}>
+            <div style={{ maxWidth: '600px', margin: '0 auto', border: '1px solid #ddd', padding: '30px', borderRadius: '8px' }}>
                 <h2 style={{ textAlign: 'center' }}>Đăng nhập hệ thống</h2>
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                     <input type="text" name="email" placeholder="Email" value={formData.email} onChange={handleChange} style={styles.input} />
