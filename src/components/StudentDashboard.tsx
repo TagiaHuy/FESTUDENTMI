@@ -19,7 +19,7 @@ const StudentDashboard = () => {
 
     const fetchClasses = async () => {
         try {
-            const res = await fetch('http://localhost:8081/api/classes');
+            const res = await fetch('/api/classes');
             const data = await res.json();
             setClasses(data);
         } catch (err) {
@@ -29,7 +29,7 @@ const StudentDashboard = () => {
 
     const fetchMyClasses = async (studentCode: string) => {
         try {
-            const res = await fetch(`http://localhost:8081/api/students/my-classes?studentCode=${studentCode}`);
+            const res = await fetch(`/api/students/my-classes?studentCode=${studentCode}`);
             const data = await res.json();
             setMyClasses(data);
         } catch (err) {
@@ -53,7 +53,7 @@ const StudentDashboard = () => {
         formData.append('file', selectedFile);
 
         try {
-            const response = await fetch(`http://localhost:8081/api/students/${user.id}/upload-avatar`, {
+            const response = await fetch(`/api/students/${user.id}/upload-avatar`, {
                 method: 'POST',
                 body: formData,
             });
@@ -85,7 +85,7 @@ const StudentDashboard = () => {
         if (!window.confirm(`Bạn có muốn đăng ký vào lớp: ${className}?`)) return;
 
         try {
-            const response = await fetch('http://localhost:8081/api/students', {
+            const response = await fetch('/api/students', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -125,7 +125,7 @@ const StudentDashboard = () => {
                         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                             <div style={styles.avatarPlaceholder}>
                                 {user.avatar_path ? (
-                                    <img src={`http://localhost:8081/${user.avatar_path}`} alt="Avatar" style={styles.avatarImg} />
+                                    <img src={`/${user.avatar_path}`} alt="Avatar" style={styles.avatarImg} />
                                 ) : (
                                     "No Avatar"
                                 )}

@@ -16,7 +16,7 @@ const UserDashboard = () => {
 
     const fetchClasses = async () => {
         try {
-            const res = await fetch('http://localhost:8081/api/classes');
+            const res = await fetch('/api/classes');
             const data = await res.json();
             setClasses(data);
         } catch (err) {
@@ -29,7 +29,7 @@ const UserDashboard = () => {
         setRequestMessage({ type: '', text: '' });
 
         try {
-            const response = await fetch('http://localhost:8081/api/students/request-role', {
+            const response = await fetch('/api/students/request-role', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

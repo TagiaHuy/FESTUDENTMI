@@ -13,7 +13,7 @@ const StudentManagement = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetch(`http://localhost:8081/api/students/search?name=${encodeURIComponent(searchName)}`);
+            const response = await fetch(`/api/students/search?name=${encodeURIComponent(searchName)}`);
             const data = await response.json();
             
             if (Array.isArray(data)) {

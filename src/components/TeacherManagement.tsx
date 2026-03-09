@@ -16,7 +16,7 @@ const TeacherManagement = () => {
 
     const fetchTeachers = async () => {
         try {
-            const response = await fetch('http://localhost:8081/api/teachers');
+            const response = await fetch('/api/teachers');
             const data = await response.json();
             setTeachers(data);
         } catch (error) {
@@ -33,7 +33,7 @@ const TeacherManagement = () => {
         setMessage({ type: '', text: '', teacherCode: '' });
 
         try {
-            const response = await fetch('http://localhost:8081/api/teachers', {
+            const response = await fetch('/api/teachers', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),

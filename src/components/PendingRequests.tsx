@@ -10,7 +10,7 @@ const PendingRequests = () => {
 
     const fetchRequests = async () => {
         try {
-            const res = await fetch('http://localhost:8081/api/students/pending-requests');
+            const res = await fetch('/api/students/pending-requests');
             const data = await res.json();
             setRequests(data);
         } catch (err) {
@@ -22,7 +22,7 @@ const PendingRequests = () => {
         if (!window.confirm(`Bạn có chắc chắn muốn cấp quyền cho ${email}?`)) return;
 
         try {
-            const response = await fetch('http://localhost:8081/api/students/approve-role', {
+            const response = await fetch('/api/students/approve-role', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email }),

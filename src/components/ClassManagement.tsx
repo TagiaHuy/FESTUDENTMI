@@ -16,7 +16,7 @@ const ClassManagement = () => {
 
     const fetchClasses = async () => {
         try {
-            const response = await fetch('http://localhost:8081/api/classes');
+            const response = await fetch('/api/classes');
             const data = await response.json();
             setClasses(data);
         } catch (error) {
@@ -35,7 +35,7 @@ const ClassManagement = () => {
         setMessage({ type: '', text: '' });
 
         try {
-            const response = await fetch('http://localhost:8081/api/classes', {
+            const response = await fetch('/api/classes', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),

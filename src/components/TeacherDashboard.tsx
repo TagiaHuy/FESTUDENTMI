@@ -23,7 +23,7 @@ const TeacherDashboard = () => {
 
     const fetchMyClasses = async (teacherCode: string) => {
         try {
-            const response = await fetch(`http://localhost:8081/api/classes/by-teacher?teacherCode=${teacherCode}`);
+            const response = await fetch(`/api/classes/by-teacher?teacherCode=${teacherCode}`);
             const data = await response.json();
             setMyClasses(data);
         } catch (error) {
@@ -33,7 +33,7 @@ const TeacherDashboard = () => {
 
     const fetchStudentsInClass = async (classCode: string) => {
         try {
-            const response = await fetch(`http://localhost:8081/api/students?classCode=${classCode}`);
+            const response = await fetch(`/api/students?classCode=${classCode}`);
             const data = await response.json();
             setStudents(data);
         } catch (error) {
@@ -48,7 +48,7 @@ const TeacherDashboard = () => {
 
     const handleUpdateGrade = async (student: any, newGrade: string) => {
         try {
-            const response = await fetch('http://localhost:8081/api/students/update-grade', {
+            const response = await fetch('/api/students/update-grade', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -81,7 +81,7 @@ const TeacherDashboard = () => {
         setMessage({ type: '', text: '' });
 
         try {
-            const response = await fetch('http://localhost:8081/api/classes', {
+            const response = await fetch('/api/classes', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
