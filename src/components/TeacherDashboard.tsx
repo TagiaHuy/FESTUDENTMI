@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { authFetch } from '../utils/authFetch';
 
 const TeacherDashboard = () => {
     const [user, setUser] = useState<any>(null);
@@ -23,7 +24,7 @@ const TeacherDashboard = () => {
 
     const fetchMyClasses = async (teacherCode: string) => {
         try {
-            const response = await fetch(`/api/classes/by-teacher?teacherCode=${teacherCode}`);
+            const response = await authFetch(`/api/classes/by-teacher?teacherCode=${teacherCode}`);
             const data = await response.json();
             setMyClasses(data);
         } catch (error) {
@@ -33,7 +34,7 @@ const TeacherDashboard = () => {
 
     const fetchStudentsInClass = async (classCode: string) => {
         try {
-            const response = await fetch(`/api/students?classCode=${classCode}`);
+            const response = await authFetch(`/api/students?classCode=${classCode}`);
             const data = await response.json();
             setStudents(data);
         } catch (error) {
@@ -48,13 +49,11 @@ const TeacherDashboard = () => {
 
     const handleUpdateGrade = async (student: any, newGrade: string) => {
         try {
-            const response = await fetch('/api/students/update-grade', {
+            const response = await authFetch('/api/students/update-grade', {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     studentCode: student.student_code,
                     classCode: selectedClass.class_code,
-                    email: student.email,
                     grade: parseFloat(newGrade)
                 }),
             });
@@ -81,9 +80,8 @@ const TeacherDashboard = () => {
         setMessage({ type: '', text: '' });
 
         try {
-            const response = await fetch('/api/classes', {
+            const response = await authFetch('/api/classes', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     className: formData.className,
                     description: formData.description,
@@ -105,10 +103,16 @@ const TeacherDashboard = () => {
         }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.reload();
+    const handleLogout = async () => {
+        try {
+            await authFetch('/api/logout');
+        } catch (error) {
+            console.error('Lỗi khi đăng xuất:', error);
+        } finally {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.reload();
+        }
     };
 
     if (!user) return <div style={{ padding: '20px' }}>Đang tải...</div>;

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { authFetch } from '../utils/authFetch';
 
 const StudentManagement = () => {
     const [searchName, setSearchName] = useState('');
@@ -13,7 +14,7 @@ const StudentManagement = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetch(`/api/students/search?name=${encodeURIComponent(searchName)}`);
+            const response = await authFetch(`/api/students/search?name=${encodeURIComponent(searchName)}`);
             const data = await response.json();
             
             if (Array.isArray(data)) {

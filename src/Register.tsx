@@ -4,8 +4,9 @@ const Register = () => {
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
+        username: '',
         password: '',
-        role: 'USER' // Mặc định role là USER
+        role: 'ROLE_USER' // Cập nhật role theo tài liệu API hệ thống
     });
 
     const [message, setMessage] = useState({ type: '', text: '' });
@@ -42,7 +43,6 @@ const Register = () => {
             <div className="glass-card animate-slide-up" style={{ width: '100%', maxWidth: '500px' }}>
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                     <h2 className="page-title" style={{ fontSize: '2rem' }}>Đăng ký tài khoản</h2>
-                    <p className="page-subtitle" style={{ margin: 0 }}>(Phiên bản Vulnerable)</p>
                 </div>
 
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -69,6 +69,17 @@ const Register = () => {
                     </div>
                     
                     <div className="form-group" style={{ marginBottom: 0 }}>
+                        <label className="form-label">Tên đăng nhập (Username)</label>
+                        <input 
+                            type="text" 
+                            name="username"
+                            placeholder="Tên đăng nhập" 
+                            onChange={handleChange} 
+                            className="input-field"
+                        />
+                    </div>
+                    
+                    <div className="form-group" style={{ marginBottom: 0 }}>
                         <label className="form-label">Mật khẩu</label>
                         <input 
                             type="password" 
@@ -78,9 +89,6 @@ const Register = () => {
                             className="input-field"
                         />
                     </div>
-
-                    {/* LỖI: Input ẩn có thể can thiệp qua DevTools để sửa role thành ADMIN */}
-                    <input type="hidden" name="role" value={formData.role} />
 
                     <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>
                         Tạo tài khoản

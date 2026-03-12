@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { authFetch } from '../utils/authFetch';
 
 const UserDashboard = () => {
     const [user, setUser] = useState<any>(null);
@@ -51,10 +52,16 @@ const UserDashboard = () => {
         }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.reload();
+    const handleLogout = async () => {
+        try {
+            await authFetch('/api/logout');
+        } catch (error) {
+            console.error('Lỗi khi đăng xuất:', error);
+        } finally {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.reload();
+        }
     };
 
     if (!user) {

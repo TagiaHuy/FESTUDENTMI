@@ -3,6 +3,7 @@ import PendingRequests from './PendingRequests';
 import TeacherManagement from './TeacherManagement';
 import ClassManagement from './ClassManagement';
 import StudentManagement from './StudentManagement';
+import { authFetch } from '../utils/authFetch';
 
 const Dashboard = () => {
     const [user, setUser] = useState<any>(null);
@@ -15,10 +16,16 @@ const Dashboard = () => {
         }
     }, []);
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.reload();
+    const handleLogout = async () => {
+        try {
+            await authFetch('/api/logout');
+        } catch (error) {
+            console.error('Lỗi khi đăng xuất:', error);
+        } finally {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.reload();
+        }
     };
 
     if (!user) {

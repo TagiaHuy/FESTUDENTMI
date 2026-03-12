@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { authFetch } from '../utils/authFetch';
 
 const StudentDashboard = () => {
     const [user, setUser] = useState<any>(null);
@@ -19,7 +20,7 @@ const StudentDashboard = () => {
 
     const fetchClasses = async () => {
         try {
-            const res = await fetch('/api/classes');
+            const res = await authFetch('/api/classes');
             const data = await res.json();
             setClasses(data);
         } catch (err) {
@@ -27,9 +28,9 @@ const StudentDashboard = () => {
         }
     };
 
-    const fetchMyClasses = async (studentCode: string) => {
+    const fetchMyClasses = async (_studentCode: string) => { // Tham số này có thể bỏ đi luôn nhưng giữ để khỏi sửa useeffect
         try {
-            const res = await fetch(`/api/students/my-classes?studentCode=${studentCode}`);
+            const res = await authFetch(`/api/students/my-classes`);
             const data = await res.json();
             setMyClasses(data);
         } catch (err) {
@@ -53,7 +54,7 @@ const StudentDashboard = () => {
         formData.append('file', selectedFile);
 
         try {
-            const response = await fetch(`/api/students/${user.id}/upload-avatar`, {
+            const response = await authFetch(`/api/students/my-avatar`, {
                 method: 'POST',
                 body: formData,
             });
@@ -71,10 +72,16 @@ const StudentDashboard = () => {
         }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.reload();
+    const handleLogout = async () => {
+        try {
+            await authFetch('/api/logout');
+        } catch (error) {
+            console.error('Lỗi khi đăng xuất:', error);
+        } finally {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.reload();
+        }
     };
 
     if (!user) {
@@ -85,14 +92,10 @@ const StudentDashboard = () => {
         if (!window.confirm(`Bạn có muốn đăng ký vào lớp: ${className}?`)) return;
 
         try {
-            const response = await fetch('/api/students', {
+            const response = await authFetch('/api/students', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    studentCode: user.studentCode,
                     classCode: classCode,
-                    email: user.email,
-                    grade: 0
                 }),
             });
 

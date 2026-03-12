@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { authFetch } from '../utils/authFetch';
 
 const TeacherManagement = () => {
     const [teachers, setTeachers] = useState<any[]>([]);
@@ -16,7 +17,7 @@ const TeacherManagement = () => {
 
     const fetchTeachers = async () => {
         try {
-            const response = await fetch('/api/teachers');
+            const response = await authFetch('/api/teachers');
             const data = await response.json();
             setTeachers(data);
         } catch (error) {
@@ -33,9 +34,8 @@ const TeacherManagement = () => {
         setMessage({ type: '', text: '', teacherCode: '' });
 
         try {
-            const response = await fetch('/api/teachers', {
+            const response = await authFetch('/api/teachers', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
             });
 
