@@ -26,7 +26,7 @@ const TeacherDashboard = () => {
         try {
             const response = await authFetch(`/api/classes/by-teacher?teacherCode=${teacherCode}`);
             const data = await response.json();
-            setMyClasses(data);
+            setMyClasses(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error("Lỗi tải danh sách lớp học:", error);
         }
@@ -36,7 +36,7 @@ const TeacherDashboard = () => {
         try {
             const response = await authFetch(`/api/students?classCode=${classCode}`);
             const data = await response.json();
-            setStudents(data);
+            setStudents(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error("Lỗi tải danh sách sinh viên:", error);
         }

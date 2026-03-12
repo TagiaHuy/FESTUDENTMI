@@ -22,7 +22,7 @@ const StudentDashboard = () => {
         try {
             const res = await authFetch('/api/classes');
             const data = await res.json();
-            setClasses(data);
+            setClasses(Array.isArray(data) ? data : []);
         } catch (err) {
             console.error(err);
         }
@@ -32,7 +32,7 @@ const StudentDashboard = () => {
         try {
             const res = await authFetch(`/api/students/my-classes`);
             const data = await res.json();
-            setMyClasses(data);
+            setMyClasses(Array.isArray(data) ? data : []);
         } catch (err) {
             console.error(err);
         }

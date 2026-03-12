@@ -19,7 +19,7 @@ const ClassManagement = () => {
         try {
             const response = await authFetch('/api/classes');
             const data = await response.json();
-            setClasses(data);
+            setClasses(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error("Lỗi tải danh sách lớp học:", error);
         } finally {

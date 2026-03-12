@@ -19,7 +19,7 @@ const TeacherManagement = () => {
         try {
             const response = await authFetch('/api/teachers');
             const data = await response.json();
-            setTeachers(data);
+            setTeachers(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error("Lỗi tải danh sách giảng viên:", error);
         }

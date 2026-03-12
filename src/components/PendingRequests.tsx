@@ -13,7 +13,7 @@ const PendingRequests = () => {
         try {
             const res = await authFetch('/api/students/pending-requests');
             const data = await res.json();
-            setRequests(data);
+            setRequests(Array.isArray(data) ? data : []);
         } catch (err) {
             setError(err);
         }
