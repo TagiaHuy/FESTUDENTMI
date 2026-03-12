@@ -114,138 +114,156 @@ const TeacherDashboard = () => {
     if (!user) return <div style={{ padding: '20px' }}>Đang tải...</div>;
 
     return (
-        <div style={styles.container}>
-            <header style={styles.header}>
-                <h1 style={{ margin: 0, fontSize: '24px' }}>Cổng Thông Tin Giảng Viên</h1>
-                <button onClick={handleLogout} style={styles.logoutBtn}>Đăng xuất</button>
+        <div className="app-container">
+            <header className="flex-between glass-panel animate-fade-in" style={{ padding: '15px 30px', marginBottom: '30px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <div style={{ 
+                        width: '40px', height: '40px', 
+                        borderRadius: '10px', 
+                        background: 'linear-gradient(135deg, var(--primary-color), var(--primary-hover))',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        color: 'white', fontWeight: 'bold', fontSize: '1.2rem',
+                        boxShadow: 'var(--shadow-glow)'
+                    }}>T</div>
+                    <h1 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 600, color: 'var(--text-primary)' }}>Teacher Portal</h1>
+                </div>
+                <button onClick={handleLogout} className="btn btn-danger" style={{ width: 'auto' }}>Đăng xuất</button>
             </header>
 
-            <main style={styles.main}>
+            <main className="animate-slide-up">
                 <div style={{ display: 'flex', gap: '30px', flexWrap: 'wrap' }}>
                     {/* Cột trái: Hồ sơ & Tạo lớp */}
                     <div style={{ flex: '1', minWidth: '350px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                        <div style={styles.card}>
-                            <h2 style={{ borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Hồ sơ Giảng viên</h2>
-                            <div style={styles.infoRow}><strong>Mã GV:</strong> <span style={{ color: '#007bff', fontWeight: 'bold' }}>{user.teacherCode}</span></div>
-                            <div style={styles.infoRow}><strong>Họ tên:</strong> <span>{user.fullName}</span></div>
-                            <div style={styles.warningBox}>
-                                <p style={{ margin: 0, color: 'red' }}>🚨 Bảo mật: Mật khẩu là <code>{user.password}</code></p>
+                        <div className="glass-card">
+                            <h2 className="section-title">Hồ sơ Giảng viên</h2>
+                            <div style={{ marginBottom: '15px' }}>
+                                <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '5px' }}>Mã giảng viên</div>
+                                <div style={{ fontSize: '1.1rem', fontWeight: 500, color: 'var(--primary-color)' }}>{user.teacherCode}</div>
+                            </div>
+                            <div style={{ marginBottom: '20px' }}>
+                                <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '5px' }}>Họ và tên</div>
+                                <div style={{ fontSize: '1.1rem', fontWeight: 500 }}>{user.fullName}</div>
                             </div>
                         </div>
 
-                        <div style={styles.card}>
-                            <h2 style={{ borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Tạo Lớp học mới</h2>
+                        <div className="glass-card">
+                            <h2 className="section-title">Tạo Lớp học mới</h2>
                             <form onSubmit={handleCreateClass} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                                <div>
-                                    <label>Tên lớp học:</label><br/>
+                                <div className="form-group" style={{ marginBottom: 0 }}>
+                                    <label className="form-label">Tên lớp học</label>
                                     <input 
                                         name="className" 
                                         value={formData.className} 
                                         onChange={handleChange} 
                                         required 
                                         placeholder="Ví dụ: Lập trình Java"
-                                        style={styles.input} 
+                                        className="input-field" 
                                     />
                                 </div>
-                                <div>
-                                    <label>Mô tả lớp học:</label><br/>
+                                <div className="form-group" style={{ marginBottom: 0 }}>
+                                    <label className="form-label">Mô tả lớp học</label>
                                     <textarea 
                                         name="description" 
                                         value={formData.description} 
                                         onChange={handleChange} 
                                         required 
                                         placeholder="Ví dụ: Lớp học về Spring Boot..."
-                                        style={{ ...styles.input, minHeight: '80px', fontFamily: 'inherit' }} 
+                                        className="input-field"
+                                        style={{ minHeight: '80px', resize: 'vertical' }} 
                                     />
                                 </div>
-                                <button type="submit" style={styles.submitBtn}>Tạo lớp học</button>
+                                <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>Tạo lớp học</button>
                             </form>
                             {message.text && (
-                                <div style={{ 
-                                    marginTop: '15px', padding: '10px', borderRadius: '4px',
-                                    backgroundColor: message.type === 'success' ? '#d4edda' : '#f8d7da',
-                                    color: message.type === 'success' ? '#155724' : '#721c24'
-                                }}>{message.text}</div>
+                                <div className={`alert ${message.type === 'success' ? 'alert-success' : 'alert-error'} mt-3`}>
+                                    {message.text}
+                                </div>
                             )}
                         </div>
                     </div>
 
                     {/* Cột phải: Danh sách lớp học & Chi tiết sinh viên */}
                     <div style={{ flex: '2', minWidth: '500px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                        <div style={styles.card}>
-                            <h2 style={{ borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Lớp học tôi giảng dạy</h2>
-                            <table style={styles.table}>
-                                <thead>
-                                    <tr>
-                                        <th style={styles.th}>Mã Lớp</th>
-                                        <th style={styles.th}>Tên Lớp</th>
-                                        <th style={styles.th}>Số SV</th>
-                                        <th style={styles.th}>Thao tác</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {myClasses.length > 0 ? myClasses.map((c: any) => (
-                                        <tr key={c.id} style={selectedClass?.id === c.id ? { backgroundColor: '#e7f3ff' } : {}}>
-                                            <td style={styles.td}>{c.class_code}</td>
-                                            <td style={styles.td}>{c.class_name}</td>
-                                            <td style={styles.td}><strong>{c.studentCount}</strong></td>
-                                            <td style={styles.td}>
-                                                <button onClick={() => handleViewDetails(c)} style={styles.viewBtn}>Xem sinh viên</button>
-                                            </td>
-                                        </tr>
-                                    )) : (
-                                        <tr><td colSpan={4} style={{...styles.td, textAlign: 'center'}}>Bạn chưa tạo lớp học nào.</td></tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {selectedClass && (
-                            <div style={{ ...styles.card, border: '1px solid #007bff' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #eee', marginBottom: '10px' }}>
-                                    <h2 style={{ margin: 0 }}>Danh sách sinh viên: {selectedClass.class_code}</h2>
-                                    <button onClick={() => setSelectedClass(null)} style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'red' }}>Đóng ✖</button>
-                                </div>
-                                <table style={styles.table}>
+                        <div className="glass-card">
+                            <h2 className="section-title">Lớp học tôi giảng dạy</h2>
+                            <div className="table-container">
+                                <table className="modern-table">
                                     <thead>
                                         <tr>
-                                            <th style={styles.th}>Mã SV</th>
-                                            <th style={styles.th}>Họ tên</th>
-                                            <th style={styles.th}>Email</th>
-                                            <th style={styles.th}>Điểm</th>
+                                            <th>Mã Lớp</th>
+                                            <th>Tên Lớp</th>
+                                            <th>Số SV</th>
+                                            <th>Thao tác</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {students.length > 0 ? students.map((s: any) => (
-                                            <tr key={s.id}>
-                                                <td style={styles.td}>{s.student_code}</td>
-                                                <td style={styles.td}>{s.full_name}</td>
-                                                <td style={styles.td}>{s.email}</td>
-                                                <td style={styles.td}>
-                                                    <div style={{ display: 'flex', gap: '5px' }}>
-                                                        <input 
-                                                            type="number" 
-                                                            id={`grade-${s.id}`}
-                                                            defaultValue={s.grade} 
-                                                            style={{ width: '50px', padding: '3px' }} 
-                                                        />
-                                                        <button 
-                                                            onClick={() => {
-                                                                const input = document.getElementById(`grade-${s.id}`) as HTMLInputElement;
-                                                                handleUpdateGrade(s, input.value);
-                                                            }}
-                                                            style={{ ...styles.viewBtn, backgroundColor: '#28a745' }}
-                                                        >
-                                                            Lưu
-                                                        </button>
-                                                    </div>
+                                        {myClasses.length > 0 ? myClasses.map((c: any) => (
+                                            <tr key={c.id} style={selectedClass?.id === c.id ? { background: 'rgba(99, 102, 241, 0.1)', borderLeft: '3px solid var(--primary-color)' } : {}}>
+                                                <td><span className="badge badge-primary">{c.class_code}</span></td>
+                                                <td style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{c.class_name}</td>
+                                                <td><strong>{c.studentCount}</strong></td>
+                                                <td>
+                                                    <button onClick={() => handleViewDetails(c)} className="btn btn-secondary" style={{ padding: '6px 12px', fontSize: '0.85rem' }}>Xem sinh viên</button>
                                                 </td>
                                             </tr>
                                         )) : (
-                                            <tr><td colSpan={4} style={{...styles.td, textAlign: 'center'}}>Chưa có sinh viên nào đăng ký lớp này.</td></tr>
+                                            <tr><td colSpan={4} className="text-center" style={{ padding: '30px' }}>Bạn chưa tạo lớp học nào.</td></tr>
                                         )}
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+
+                        {selectedClass && (
+                            <div className="glass-card animate-slide-up" style={{ border: '1px solid var(--primary-color)' }}>
+                                <div className="flex-between" style={{ borderBottom: '1px solid var(--glass-border)', paddingBottom: '15px', marginBottom: '15px' }}>
+                                    <h2 style={{ margin: 0, fontSize: '1.2rem' }}>Danh sách sinh viên: <span style={{ color: 'var(--primary-color)' }}>{selectedClass.class_code}</span></h2>
+                                    <button onClick={() => setSelectedClass(null)} className="btn btn-danger" style={{ padding: '4px 10px', fontSize: '0.8rem', width: 'auto' }}>Đóng ✖</button>
+                                </div>
+                                <div className="table-container">
+                                    <table className="modern-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Mã SV</th>
+                                                <th>Họ tên</th>
+                                                <th>Email</th>
+                                                <th>Điểm</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {students.length > 0 ? students.map((s: any) => (
+                                                <tr key={s.id}>
+                                                    <td>{s.student_code}</td>
+                                                    <td style={{ fontWeight: 500 }}>{s.full_name}</td>
+                                                    <td><a href={`mailto:${s.email}`}>{s.email}</a></td>
+                                                    <td>
+                                                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                                                            <input 
+                                                                type="number" 
+                                                                id={`grade-${s.id}`}
+                                                                defaultValue={s.grade}
+                                                                className="input-field" 
+                                                                style={{ width: '70px', padding: '6px 10px', textAlign: 'center' }} 
+                                                            />
+                                                            <button 
+                                                                onClick={() => {
+                                                                    const input = document.getElementById(`grade-${s.id}`) as HTMLInputElement;
+                                                                    handleUpdateGrade(s, input.value);
+                                                                }}
+                                                                className="btn btn-success"
+                                                                style={{ padding: '6px 12px', width: 'auto' }}
+                                                            >
+                                                                Lưu
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            )) : (
+                                                <tr><td colSpan={4} className="text-center" style={{ padding: '30px' }}>Chưa có sinh viên nào đăng ký lớp này.</td></tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         )}
                     </div>
@@ -253,22 +271,6 @@ const TeacherDashboard = () => {
             </main>
         </div>
     );
-};
-
-const styles: { [key: string]: React.CSSProperties } = {
-    container: { fontFamily: 'Arial, sans-serif', backgroundColor: '#f8f9fa', minHeight: '100vh', color: '#000' },
-    header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 40px', backgroundColor: '#fff', borderBottom: '2px solid #eee' },
-    logoutBtn: { backgroundColor: '#ff4d4d', color: '#fff', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' },
-    submitBtn: { backgroundColor: '#000', color: '#fff', border: 'none', padding: '12px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' },
-    viewBtn: { backgroundColor: '#007bff', color: '#fff', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' },
-    input: { width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box' },
-    main: { padding: '30px 40px' },
-    card: { backgroundColor: '#fff', padding: '25px', borderRadius: '8px', border: '1px solid #ddd', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' },
-    infoRow: { marginBottom: '10px', display: 'flex', justifyContent: 'space-between' },
-    warningBox: { border: '1px solid red', padding: '10px', marginTop: '15px', backgroundColor: '#fff5f5' },
-    table: { width: '100%', borderCollapse: 'collapse', marginTop: '10px' },
-    th: { textAlign: 'left', padding: '12px', borderBottom: '2px solid #eee', backgroundColor: '#f9f9f9', fontSize: '14px' },
-    td: { padding: '12px', borderBottom: '1px solid #eee', fontSize: '14px' }
 };
 
 export default TeacherDashboard;

@@ -56,106 +56,111 @@ const ClassManagement = () => {
     };
 
     return (
-        <div style={{ padding: '20px' }}>
-            <h3 style={{ borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Quản lý Lớp học</h3>
+        <div style={{ padding: '20px' }} className="animate-fade-in">
+            <h3 className="section-title">Quản lý Lớp học</h3>
             
             <div style={{ display: 'flex', gap: '30px', flexWrap: 'wrap' }}>
                 {/* Form Tạo Lớp mới */}
-                <div style={{ flex: '1', minWidth: '350px', backgroundColor: '#fff', padding: '20px', borderRadius: '8px', border: '1px solid #ddd', alignSelf: 'flex-start' }}>
-                    <h4>Tạo Lớp học mới</h4>
+                <div className="glass-card" style={{ flex: '1', minWidth: '350px', alignSelf: 'flex-start' }}>
+                    <h4 style={{ marginTop: 0, marginBottom: '20px', fontSize: '1.2rem', fontWeight: 600 }}>Tạo Lớp học mới</h4>
                     <form onSubmit={handleCreateClass} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                        <div>
-                            <label>Tên lớp học:</label><br/>
+                        <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label className="form-label">Tên lớp học</label>
                             <input 
                                 name="className" 
                                 value={formData.className} 
                                 onChange={handleChange} 
                                 required 
                                 placeholder="Ví dụ: Lập trình Java"
-                                style={styles.input} 
+                                className="input-field" 
                             />
                         </div>
-                        <div>
-                            <label>Mã Giảng viên:</label><br/>
+                        <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label className="form-label">Mã Giảng viên</label>
                             <input 
                                 name="teacherCode" 
                                 value={formData.teacherCode} 
                                 onChange={handleChange} 
                                 required 
                                 placeholder="Ví dụ: GV8"
-                                style={styles.input} 
+                                className="input-field" 
                             />
                         </div>
-                        <div>
-                            <label>Mô tả:</label><br/>
+                        <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label className="form-label">Mô tả</label>
                             <textarea 
                                 name="description" 
                                 value={formData.description} 
                                 onChange={handleChange} 
                                 required 
                                 placeholder="Mô tả chi tiết về nội dung lớp học..."
-                                style={{ ...styles.input, minHeight: '80px', fontFamily: 'inherit' }} 
+                                className="input-field"
+                                style={{ minHeight: '80px', resize: 'vertical' }} 
                             />
                         </div>
-                        <button type="submit" style={styles.submitBtn}>Tạo lớp học</button>
+                        <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>Tạo lớp học</button>
                     </form>
 
                     {message.text && (
-                        <div style={{ 
-                            marginTop: '15px', padding: '10px', borderRadius: '4px',
-                            backgroundColor: message.type === 'success' ? '#d4edda' : '#f8d7da',
-                            color: message.type === 'success' ? '#155724' : '#721c24',
-                            border: '1px solid currentColor'
-                        }}>
+                        <div className={`alert ${message.type === 'success' ? 'alert-success' : 'alert-error'} mt-3`}>
                             {message.text}
                         </div>
                     )}
                 </div>
 
                 {/* Danh sách Lớp học */}
-                <div style={{ flex: '2', minWidth: '600px', backgroundColor: '#fff', padding: '20px', borderRadius: '8px', border: '1px solid #ddd' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-                        <h4>Danh sách toàn bộ lớp học</h4>
-                        <button onClick={fetchClasses} style={styles.refreshBtn}>Làm mới</button>
+                <div className="glass-card" style={{ flex: '2', minWidth: '600px' }}>
+                    <div className="flex-between" style={{ marginBottom: '20px' }}>
+                        <h4 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 600 }}>Danh sách toàn bộ lớp học</h4>
+                        <button onClick={fetchClasses} className="btn btn-secondary" style={{ padding: '6px 15px', fontSize: '0.9rem', width: 'auto' }}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '6px', display: 'inline-block', verticalAlign: 'text-top' }}>
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                            </svg>
+                            Làm mới
+                        </button>
                     </div>
 
                     {loading ? (
-                        <p>Đang tải dữ liệu...</p>
+                        <div className="text-center" style={{ padding: '40px', color: 'var(--text-muted)' }}>
+                            <div style={{ display: 'inline-block', width: '30px', height: '30px', border: '3px solid rgba(99,102,241,0.3)', borderTopColor: 'var(--primary-color)', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+                            <p style={{ marginTop: '15px' }}>Đang tải dữ liệu...</p>
+                        </div>
                     ) : (
-                        <table style={styles.table}>
-                            <thead>
-                                <tr>
-                                    <th style={styles.th}>Mã Lớp</th>
-                                    <th style={styles.th}>Tên Lớp</th>
-                                    <th style={styles.th}>Mã GV</th>
-                                    <th style={styles.th}>Mô tả</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {classes.map((c: any) => (
-                                    <tr key={c.id}>
-                                        <td style={styles.td}><strong>{c.class_code}</strong></td>
-                                        <td style={styles.td}>{c.class_name}</td>
-                                        <td style={styles.td}>{c.teacher_code || 'N/A'}</td>
-                                        <td style={{ ...styles.td, fontSize: '13px', color: '#666' }}>{c.description}</td>
+                        <div className="table-container">
+                            <table className="modern-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã Lớp</th>
+                                        <th>Tên Lớp</th>
+                                        <th>Mã GV</th>
+                                        <th>Mô tả</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {classes.map((c: any) => (
+                                        <tr key={c.id}>
+                                            <td><span className="badge badge-primary">{c.class_code}</span></td>
+                                            <td style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{c.class_name}</td>
+                                            <td>
+                                                {c.teacher_code ? 
+                                                    <span className="badge badge-secondary">{c.teacher_code}</span> : 
+                                                    <span style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>N/A</span>
+                                                }
+                                            </td>
+                                            <td style={{ fontSize: '0.9rem', color: 'var(--text-muted)', maxWidth: '250px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                {c.description}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     )}
                 </div>
             </div>
         </div>
     );
-};
-
-const styles: { [key: string]: React.CSSProperties } = {
-    input: { width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box' },
-    submitBtn: { backgroundColor: '#000', color: '#fff', border: 'none', padding: '12px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' },
-    refreshBtn: { backgroundColor: '#f8f9fa', color: '#000', border: '1px solid #ddd', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' },
-    table: { width: '100%', borderCollapse: 'collapse', marginTop: '10px' },
-    th: { textAlign: 'left', padding: '12px', borderBottom: '2px solid #eee', backgroundColor: '#f9f9f9', fontSize: '14px' },
-    td: { padding: '12px', borderBottom: '1px solid #eee', fontSize: '14px' }
 };
 
 export default ClassManagement;

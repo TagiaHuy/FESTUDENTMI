@@ -31,20 +31,51 @@ function App() {
   }, [])
 
   return (
-    <div className="App">
+    <div className="app-container">
       {view !== 'admin_dashboard' && view !== 'student_dashboard' && view !== 'user_dashboard' && view !== 'teacher_dashboard' && (
-        <nav style={{ padding: '10px', background: '#eee', marginBottom: '20px' }}>
-          <button onClick={() => setView('login')}>Trang Đăng Nhập</button>
-          <button onClick={() => setView('register')}>Trang Đăng Ký</button>
-        </nav>
+        <header style={{ 
+          marginBottom: '2rem', 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center',
+          padding: '1rem 2rem',
+        }} className="glass-panel animate-fade-in">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ 
+              width: '40px', height: '40px', 
+              borderRadius: '10px', 
+              background: 'linear-gradient(135deg, var(--primary-color), var(--primary-hover))',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: 'white', fontWeight: 'bold', fontSize: '1.2rem',
+              boxShadow: 'var(--shadow-glow)'
+            }}>SM</div>
+            <h1 style={{ fontSize: '1.5rem', margin: 0, fontWeight: 700, color: 'var(--text-primary)' }}>Student Manager</h1>
+          </div>
+          <nav style={{ display: 'flex', gap: '1rem' }}>
+            <button 
+              className={view === 'login' ? 'btn btn-primary' : 'btn btn-secondary'} 
+              onClick={() => setView('login')}
+            >
+              Đăng Nhập
+            </button>
+            <button 
+              className={view === 'register' ? 'btn btn-primary' : 'btn btn-secondary'} 
+              onClick={() => setView('register')}
+            >
+              Đăng Ký
+            </button>
+          </nav>
+        </header>
       )}
 
-      {view === 'login' && <Login />}
-      {view === 'register' && <Register />}
-      {view === 'admin_dashboard' && <Dashboard />}
-      {view === 'student_dashboard' && <StudentDashboard />}
-      {view === 'user_dashboard' && <UserDashboard />}
-      {view === 'teacher_dashboard' && <TeacherDashboard />}
+      <main className="animate-slide-up">
+        {view === 'login' && <Login />}
+        {view === 'register' && <Register />}
+        {view === 'admin_dashboard' && <Dashboard />}
+        {view === 'student_dashboard' && <StudentDashboard />}
+        {view === 'user_dashboard' && <UserDashboard />}
+        {view === 'teacher_dashboard' && <TeacherDashboard />}
+      </main>
     </div>
   )
 }

@@ -62,100 +62,108 @@ const UserDashboard = () => {
     }
 
     return (
-        <div style={styles.container}>
-            <header style={styles.header}>
-                <h1 style={{ margin: 0, fontSize: '24px' }}>Cổng Thông Tin Sinh Viên</h1>
-                <button onClick={handleLogout} style={styles.logoutBtn}>Đăng xuất</button>
+        <div className="app-container">
+            <header className="flex-between glass-panel animate-fade-in" style={{ padding: '15px 30px', marginBottom: '30px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <div style={{ 
+                        width: '40px', height: '40px', 
+                        borderRadius: '10px', 
+                        background: 'linear-gradient(135deg, var(--primary-color), var(--primary-hover))',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        color: 'white', fontWeight: 'bold', fontSize: '1.2rem',
+                        boxShadow: 'var(--shadow-glow)'
+                    }}>S</div>
+                    <h1 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 600, color: 'var(--text-primary)' }}>Student Portal</h1>
+                </div>
+                <button onClick={handleLogout} className="btn btn-danger" style={{ width: 'auto' }}>Đăng xuất</button>
             </header>
 
-            <main style={styles.main}>
-                <div style={styles.card}>
-                    <h2 style={{ borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Hồ sơ cá nhân</h2>
-                    <div style={styles.infoRow}><strong>Họ tên:</strong> <span>{user.fullName}</span></div>
-                    <div style={styles.infoRow}><strong>Email:</strong> <span>{user.email}</span></div>
-                    <div style={styles.warningBox}>
-                        <p style={{ margin: 0, color: 'red' }}>🚨 Lộ mật khẩu: <code>{user.password}</code></p>
+            <main className="animate-slide-up" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+                <div className="grid-cards" style={{ gridTemplateColumns: 'minmax(300px, 1fr) minmax(300px, 2fr)' }}>
+                    {/* Hồ sơ cá nhân */}
+                    <div className="glass-card">
+                        <h2 className="section-title">Hồ sơ cá nhân</h2>
+                        <div style={{ marginBottom: '15px' }}>
+                            <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '5px' }}>Họ và tên</div>
+                            <div style={{ fontSize: '1.1rem', fontWeight: 500 }}>{user.fullName}</div>
+                        </div>
+                        <div style={{ marginBottom: '20px' }}>
+                            <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '5px' }}>Địa chỉ Email</div>
+                            <div style={{ fontSize: '1.1rem', fontWeight: 500 }}>{user.email}</div>
+                        </div>
+                    </div>
+
+                    {/* Form Yêu cầu cấp quyền */}
+                    <div className="glass-card">
+                        <h2 className="section-title">Yêu cầu cấp quyền thêm</h2>
+                        <form onSubmit={handleRequestRole} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                            <div className="form-group" style={{ marginBottom: 0 }}>
+                                <label className="form-label">Email xác nhận</label>
+                                <input 
+                                    type="text" 
+                                    value={user.email} 
+                                    disabled 
+                                    className="input-field"
+                                    style={{ opacity: 0.7, cursor: 'not-allowed' }}
+                                />
+                            </div>
+                            <div className="form-group" style={{ marginBottom: 0 }}>
+                                <label className="form-label">Lý do yêu cầu</label>
+                                <textarea 
+                                    value={requestReason}
+                                    onChange={(e) => setRequestReason(e.target.value)}
+                                    placeholder="Ví dụ: Cần quyền đăng ký lớp..."
+                                    required
+                                    className="input-field"
+                                    style={{ minHeight: '100px', resize: 'vertical' }}
+                                />
+                            </div>
+                            <button type="submit" className="btn btn-primary" style={{ alignSelf: 'flex-start', width: 'auto' }}>
+                                Gửi yêu cầu
+                            </button>
+                        </form>
+
+                        {requestMessage.text && (
+                            <div className={`alert ${requestMessage.type === 'success' ? 'alert-success' : 'alert-error'} mt-3`}>
+                                {requestMessage.text}
+                            </div>
+                        )}
                     </div>
                 </div>
 
-                {/* Form Yêu cầu cấp quyền */}
-                <div style={{ ...styles.card, marginTop: '20px' }}>
-                    <h2 style={{ borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Yêu cầu cấp quyền Admin</h2>
-                    <form onSubmit={handleRequestRole} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                        <div>
-                            <label>Email xác nhận:</label><br/>
-                            <input 
-                                type="text" 
-                                value={user.email} 
-                                disabled 
-                                style={{ width: '100%', padding: '8px', background: '#f0f0f0', border: '1px solid #ccc' }} 
-                            />
-                        </div>
-                        <div>
-                            <label>Lý do yêu cầu:</label><br/>
-                            <textarea 
-                                value={requestReason}
-                                onChange={(e) => setRequestReason(e.target.value)}
-                                placeholder="Ví dụ: Em là sinh viên mới nhập học."
-                                required
-                                style={{ width: '100%', padding: '8px', minHeight: '80px', border: '1px solid #ccc' }}
-                            />
-                        </div>
-                        <button type="submit" style={styles.submitBtn}>Gửi yêu cầu</button>
-                    </form>
-
-                    {requestMessage.text && (
-                        <div style={{ 
-                            marginTop: '15px', padding: '10px', borderRadius: '4px',
-                            backgroundColor: requestMessage.type === 'success' ? '#d4edda' : '#f8d7da',
-                            color: requestMessage.type === 'success' ? '#155724' : '#721c24',
-                            border: '1px solid currentColor'
-                        }}>
-                            {requestMessage.text}
-                        </div>
-                    )}
-                </div>
-
-                <div style={{ ...styles.card, marginTop: '20px' }}>
-                    <h2 style={{ borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Danh sách lớp học hệ thống</h2>
-                    <table style={styles.table}>
-                        <thead>
-                            <tr>
-                                <th style={styles.th}>ID</th>
-                                <th style={styles.th}>Mã Lớp</th>
-                                <th style={styles.th}>Tên Lớp</th>
-                                <th style={styles.th}>Giảng viên</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {classes.map((c: any) => (
-                                <tr key={c.id}>
-                                    <td style={styles.td}>{c.id}</td>
-                                    <td style={styles.td}>{c.class_code}</td>
-                                    <td style={styles.td}>{c.class_name}</td>
-                                    <td style={styles.td}>{c.teacher_code || 'Chưa phân công'}</td>
+                <div className="glass-card mt-4">
+                    <h2 className="section-title">Danh sách lớp học (Toàn bộ hệ thống)</h2>
+                    <div className="table-container">
+                        <table className="modern-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Mã Lớp</th>
+                                    <th>Tên Lớp</th>
+                                    <th>Giảng viên</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {classes.map((c: any) => (
+                                    <tr key={c.id}>
+                                        <td>{c.id}</td>
+                                        <td><span className="badge badge-primary">{c.class_code}</span></td>
+                                        <td style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{c.class_name}</td>
+                                        <td>{c.teacher_code || <span style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>Chưa phân công</span>}</td>
+                                    </tr>
+                                ))}
+                                {classes.length === 0 && (
+                                    <tr>
+                                        <td colSpan={4} className="text-center" style={{ padding: '30px' }}>Không có dữ liệu.</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </main>
         </div>
     );
-};
-
-const styles: { [key: string]: React.CSSProperties } = {
-    container: { fontFamily: 'Arial, sans-serif', backgroundColor: '#ffffff', minHeight: '100vh', color: '#000' },
-    header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 40px', borderBottom: '2px solid #eee' },
-    logoutBtn: { backgroundColor: '#ff4d4d', color: '#fff', border: 'none', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' },
-    submitBtn: { backgroundColor: '#000', color: '#fff', border: 'none', padding: '10px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' },
-    main: { padding: '30px 40px', maxWidth: '1000px', margin: '0 auto' },
-    card: { backgroundColor: '#fff', padding: '25px', borderRadius: '8px', border: '1px solid #ddd', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' },
-    infoRow: { marginBottom: '10px', display: 'flex', justifyContent: 'space-between' },
-    warningBox: { border: '1px solid red', padding: '10px', marginTop: '15px', backgroundColor: '#fff5f5' },
-    table: { width: '100%', borderCollapse: 'collapse', marginTop: '10px' },
-    th: { textAlign: 'left', padding: '10px', borderBottom: '2px solid #eee', backgroundColor: '#f9f9f9' },
-    td: { padding: '10px', borderBottom: '1px solid #eee' }
 };
 
 export default UserDashboard;

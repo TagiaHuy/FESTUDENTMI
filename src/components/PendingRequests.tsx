@@ -42,70 +42,79 @@ const PendingRequests = () => {
     };
 
     return (
-        <div style={{ padding: '20px' }}>
-            <h3 style={{ borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Danh sách yêu cầu cấp quyền Admin</h3>
-            <p style={{ fontSize: '13px', color: '#666' }}>* Chỉ Admin mới có quyền xem danh sách này (A01: Broken Access Control nếu User truy cập được)</p>
+        <div style={{ padding: '20px' }} className="animate-fade-in">
+            <h3 className="section-title">Danh sách yêu cầu cấp quyền Admin</h3>
 
-            <table style={styles.table}>
-                <thead>
-                    <tr>
-                        <th style={styles.th}>ID</th>
-                        <th style={styles.th}>Email</th>
-                        <th style={styles.th}>Lý do</th>
-                        <th style={styles.th}>Thời gian</th>
-                        <th style={styles.th}>Trạng thái</th>
-                        <th style={styles.th}>Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {requests.length > 0 ? (
-                        requests.map((r: any) => (
-                            <tr key={r.id}>
-                                <td style={styles.td}>{r.id}</td>
-                                <td style={styles.td}>{r.email}</td>
-                                <td style={styles.td}>{r.reason}</td>
-                                <td style={styles.td}>{new Date(r.created_at).toLocaleString()}</td>
-                                <td style={styles.td}>
-                                    <span style={{ 
-                                        padding: '3px 8px', 
-                                        borderRadius: '10px', 
-                                        fontSize: '11px',
-                                        backgroundColor: '#fff3cd', 
-                                        color: '#856404',
-                                        border: '1px solid #ffeeba'
-                                    }}>
-                                        {r.status}
-                                    </span>
-                                </td>
-                                <td style={styles.td}>
-                                    <button onClick={() => handleApprove(r.email)} style={styles.approveBtn}>Duyệt</button>
-                                    <button onClick={() => alert('Chức năng Từ chối đang được phát triển')} style={styles.rejectBtn}>Từ chối</button>
-                                </td>
+            <div className="glass-card">
+                <div className="table-container">
+                    <table className="modern-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Lý do</th>
+                                <th>Thời gian</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
                             </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan={6} style={{ ...styles.td, textAlign: 'center' }}>Không có yêu cầu nào đang chờ.</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            {requests.length > 0 ? (
+                                requests.map((r: any) => (
+                                    <tr key={r.id}>
+                                        <td>{r.id}</td>
+                                        <td><a href={`mailto:${r.email}`}>{r.email}</a></td>
+                                        <td style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{r.reason}</td>
+                                        <td>{new Date(r.created_at).toLocaleString()}</td>
+                                        <td>
+                                            <span style={{ 
+                                                padding: '4px 10px', 
+                                                borderRadius: '20px', 
+                                                fontSize: '0.75rem',
+                                                fontWeight: 600,
+                                                letterSpacing: '0.5px',
+                                                textTransform: 'uppercase',
+                                                backgroundColor: r.status === 'PENDING' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(16, 185, 129, 0.1)', 
+                                                color: r.status === 'PENDING' ? '#f59e0b' : '#10b981',
+                                                border: `1px solid ${r.status === 'PENDING' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(16, 185, 129, 0.2)'}`
+                                            }}>
+                                                {r.status}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div style={{ display: 'flex', gap: '8px' }}>
+                                                <button onClick={() => handleApprove(r.email)} className="btn btn-success" style={{ padding: '6px 14px', fontSize: '0.85rem', width: 'auto' }}>Duyệt</button>
+                                                <button onClick={() => alert('Chức năng Từ chối đang được phát triển')} className="btn btn-danger" style={{ padding: '6px 14px', fontSize: '0.85rem', width: 'auto' }}>Từ chối</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={6} className="text-center" style={{ padding: '40px', color: 'var(--text-muted)' }}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}>
+                                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                                <path d="M3 9h18"></path>
+                                                <path d="M9 21V9"></path>
+                                            </svg>
+                                            Chưa có yêu cầu nào đang chờ duyệt.
+                                        </div>
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
             {error && (
-                <div style={{ color: 'red', marginTop: '20px', padding: '10px', background: '#fee' }}>
+                <div className="alert alert-error mt-4">
                     <strong>Lỗi lấy dữ liệu:</strong> {JSON.stringify(error)}
                 </div>
             )}
         </div>
     );
-};
-
-const styles: { [key: string]: React.CSSProperties } = {
-    table: { width: '100%', borderCollapse: 'collapse', marginTop: '10px', backgroundColor: '#fff' },
-    th: { textAlign: 'left', padding: '12px', borderBottom: '2px solid #eee', backgroundColor: '#f9f9f9', fontSize: '14px' },
-    td: { padding: '12px', borderBottom: '1px solid #eee', fontSize: '14px' },
-    approveBtn: { backgroundColor: '#27ae60', color: '#fff', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer', marginRight: '5px', fontSize: '12px' },
-    rejectBtn: { backgroundColor: '#e74c3c', color: '#fff', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }
 };
 
 export default PendingRequests;
